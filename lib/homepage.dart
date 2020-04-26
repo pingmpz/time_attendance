@@ -38,7 +38,7 @@ class MyHomePage extends StatelessWidget {
               height: 80,
               child: RaisedButton(
                 onPressed: () {
-                  navigateToRegisterPage(context);
+                  // !- NAVIGATOR
                 },
                 color: mycol,
                 elevation: 0.0,
