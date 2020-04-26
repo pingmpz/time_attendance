@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
+import 'data.dart';
 import 'registercamerapage.dart';
 import 'homepage.dart';
 
 class MyRegisterFinalPage extends StatelessWidget {
   Color mycol = Color(0xFF5CA9F0);
-  File image;
+  Data data;
 
-  MyRegisterFinalPage(File image){
-    this.image = image;
+  MyRegisterFinalPage(Data data){
+    this.data = data;
   }
 
   @override
@@ -25,9 +25,13 @@ class MyRegisterFinalPage extends StatelessWidget {
               children: [
                 Container(
                     height: 800,
-                    child: image == null ? SizedBox(width: 10) : Image.file(image)),
+                    child: data.image == null ? SizedBox(width: 10) : Image.file(data.image)),
               ],
             ),
+            Text(data.firstName),
+            Text(data.lastName),
+            Text(data.occupation),
+            Text(data.gender.toString()),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +67,7 @@ class MyRegisterFinalPage extends StatelessWidget {
                       height: 80,
                       child: RaisedButton(
                         onPressed: () {
-                          navigateToRegisterCameraPage(context);
+                          navigateToRegisterCameraPage(context, data);
                         },
                         color: Colors.deepOrange,
                         elevation: 0.0,
@@ -93,7 +97,7 @@ Future navigateToHomePage(context) async {
       context, MaterialPageRoute(builder: (context) => MyHomePage()));
 }
 
-Future navigateToRegisterCameraPage(context) async {
+Future navigateToRegisterCameraPage(context, data) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage()));
+      context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage(data: data)));
 }

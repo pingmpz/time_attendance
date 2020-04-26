@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'data.dart';
 import 'homepage.dart';
 import 'registercamerapage.dart';
 
@@ -15,6 +16,25 @@ class _RegisterState extends State<MyRegisterPage> {
 
   Color mycol = Color(0xFF5CA9F0);
   List<bool> isSelected = [true, false, false];
+  Data data = new Data();
+
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final occupationController = TextEditingController();
+  final phoneNoController = TextEditingController();
+
+  Future setData() async {
+    data.firstName = firstNameController.text;
+    data.lastName = lastNameController.text;
+    data.occupation = occupationController.text;
+    data.phoneNo = phoneNoController.text;
+    for(int i = 0;i < isSelected.length;i++) {
+      if(isSelected[i] == true){
+        data.gender = i;
+        break;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +86,7 @@ class _RegisterState extends State<MyRegisterPage> {
                           Container(
                             width: 400,
                             child: new TextField(
+                              controller: firstNameController,
                               inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))],
                               style: TextStyle(
                                   fontSize: 24,
@@ -107,6 +128,7 @@ class _RegisterState extends State<MyRegisterPage> {
                           Container(
                             width: 400,
                             child: new TextField(
+                              controller: lastNameController,
                               inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))],
                               style: TextStyle(
                                   fontSize: 24,
@@ -154,6 +176,7 @@ class _RegisterState extends State<MyRegisterPage> {
                           Container(
                             width: 400,
                             child: new TextField(
+                              controller: occupationController,
                               style: TextStyle(
                                   fontSize: 24,
                                   color: mycol,
@@ -194,9 +217,8 @@ class _RegisterState extends State<MyRegisterPage> {
                           Container(
                             width: 400,
                             child: new TextField(
+                              controller: phoneNoController,
                               inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]")), LengthLimitingTextInputFormatter(10),],
-                              controller: TextEditingController(),
-                              //Allow TextFiled take in Numbers as default
                               keyboardType: TextInputType.number,
                               style: TextStyle(
                                   fontSize: 24,
@@ -327,7 +349,8 @@ class _RegisterState extends State<MyRegisterPage> {
                           height: 80,
                           child: RaisedButton(
                             onPressed: () {
-                              navigateToRegisterCameraPage(context);
+                              setData();
+                              navigateToRegisterCameraPage(context, data);
                             },
                             color: Colors.green,
                             elevation: 0.0,
@@ -383,7 +406,7 @@ Future navigateToHomePage(context) async {
       context, MaterialPageRoute(builder: (context) => MyHomePage()));
 }
 
-Future navigateToRegisterCameraPage(context) async {
+Future navigateToRegisterCameraPage(context, data) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage()));
+      context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage(data: data)));
 }

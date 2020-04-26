@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'data.dart';
 import 'registerfinalpage.dart';
 import 'registerpage.dart';
 
 class MyRegisterCameraPage extends StatefulWidget {
-  const MyRegisterCameraPage({Key key}) : super(key: key);
+  final Data data;
+  const MyRegisterCameraPage({Key key, this.data}) : super(key: key);
 
   @override
   _RegisterCameraState createState() => _RegisterCameraState();
@@ -17,6 +19,15 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
   bool mypic = false;
   File _image;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future setData() async {
+    widget.data.image = _image;
+  }
+
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
@@ -24,7 +35,8 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
       if (_image == null) {
         navigateToRegisterPage(context);
       } else {
-        navigateToRegisterFinalPage(context, _image);
+        setData();
+        navigateToRegisterFinalPage(context, widget.data);
       }
     });
   }
@@ -39,7 +51,7 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
     return Scaffold(
       backgroundColor: mycol,
     );
-  }
+    }
 }
 
 Future navigateToRegisterPage(context) async {
@@ -47,7 +59,7 @@ Future navigateToRegisterPage(context) async {
       context, MaterialPageRoute(builder: (context) => MyRegisterPage()));
 }
 
-Future navigateToRegisterFinalPage(context, image) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterFinalPage(image)));
+Future navigateToRegisterFinalPage(context, data) async {
+  Navigator.push(context,
+      MaterialPageRoute(builder: (context) => MyRegisterFinalPage(data)));
 }
