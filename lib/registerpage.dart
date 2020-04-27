@@ -6,31 +6,59 @@ import 'homepage.dart';
 import 'registercamerapage.dart';
 
 class MyRegisterPage extends StatefulWidget {
-  const MyRegisterPage({ Key key }) : super(key: key);
+  final Data data;
+  const MyRegisterPage({Key key, this.data}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<MyRegisterPage> {
-
   Color mycol = Color(0xFF5CA9F0);
-  List<bool> isSelected = [true, false, false];
-  Data data = new Data();
 
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final occupationController = TextEditingController();
-  final phoneNoController = TextEditingController();
+  TextEditingController firstNameController;
+  TextEditingController lastNameController;
+  TextEditingController occupationController;
+  TextEditingController phoneNoController;
+  List<bool> isSelected = [true, false, false];
+  bool prepared = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future prepareData() async {
+      if(prepared == false) {
+        if (widget.data.ready == true) {
+          firstNameController = TextEditingController(text: widget.data.firstName);
+          lastNameController = TextEditingController(text: widget.data.lastName);
+          occupationController = TextEditingController(text: widget.data.occupation);
+          phoneNoController = TextEditingController(text: widget.data.phoneNo);
+          for (int i = 0; i < isSelected.length; i++) {
+            isSelected[i] = (i == widget.data.gender) ? true : false;
+          }
+          // !- CLEAR IMAGE ???
+        } else {
+          widget.data.ready = true;
+          firstNameController = TextEditingController();
+          lastNameController = TextEditingController();
+          occupationController = TextEditingController();
+          phoneNoController = TextEditingController();
+          isSelected = [true, false, false];
+        }
+        prepared = true;
+      }
+  }
 
   Future setData() async {
-    data.firstName = firstNameController.text;
-    data.lastName = lastNameController.text;
-    data.occupation = occupationController.text;
-    data.phoneNo = phoneNoController.text;
-    for(int i = 0;i < isSelected.length;i++) {
-      if(isSelected[i] == true){
-        data.gender = i;
+    widget.data.firstName = firstNameController.text;
+    widget.data.lastName = lastNameController.text;
+    widget.data.occupation = occupationController.text;
+    widget.data.phoneNo = phoneNoController.text;
+    for (int i = 0; i < isSelected.length; i++) {
+      if (isSelected[i] == true) {
+        widget.data.gender = i;
         break;
       }
     }
@@ -38,14 +66,14 @@ class _RegisterState extends State<MyRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    prepareData();
     return Scaffold(
-
       backgroundColor: mycol,
       resizeToAvoidBottomPadding: false,
-      
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).unfocus(); // !- NOT WORKING
+          FocusScope.of(context)
+              .unfocus(); // !- NOT WORKING (FOR CLEAR KEYBOARD)
         },
         child: Center(
           child: Container(
@@ -87,17 +115,21 @@ class _RegisterState extends State<MyRegisterPage> {
                             width: 400,
                             child: new TextField(
                               controller: firstNameController,
-                              inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))],
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(
+                                    RegExp("[a-z,A-Z]"))
+                              ],
                               style: TextStyle(
                                   fontSize: 24,
                                   color: mycol,
                                   fontFamily: 'Raleway'),
-                                decoration: new InputDecoration(
+                              decoration: new InputDecoration(
                                 filled: true,
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
+                                  borderSide:
+                                      BorderSide(color: Colors.greenAccent),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
@@ -129,7 +161,10 @@ class _RegisterState extends State<MyRegisterPage> {
                             width: 400,
                             child: new TextField(
                               controller: lastNameController,
-                              inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))],
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(
+                                    RegExp("[a-z,A-Z]"))
+                              ],
                               style: TextStyle(
                                   fontSize: 24,
                                   color: mycol,
@@ -139,7 +174,8 @@ class _RegisterState extends State<MyRegisterPage> {
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
+                                  borderSide:
+                                      BorderSide(color: Colors.greenAccent),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
@@ -186,7 +222,8 @@ class _RegisterState extends State<MyRegisterPage> {
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
+                                  borderSide:
+                                      BorderSide(color: Colors.greenAccent),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
@@ -218,7 +255,10 @@ class _RegisterState extends State<MyRegisterPage> {
                             width: 400,
                             child: new TextField(
                               controller: phoneNoController,
-                              inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]")), LengthLimitingTextInputFormatter(10),],
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                                LengthLimitingTextInputFormatter(10),
+                              ],
                               keyboardType: TextInputType.number,
                               style: TextStyle(
                                   fontSize: 24,
@@ -229,7 +269,8 @@ class _RegisterState extends State<MyRegisterPage> {
                                 fillColor: Colors.white,
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
+                                  borderSide:
+                                      BorderSide(color: Colors.greenAccent),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: new BorderRadius.circular(45.0),
@@ -305,7 +346,9 @@ class _RegisterState extends State<MyRegisterPage> {
                               ],
                               onPressed: (int index) {
                                 setState(() {
-                                  for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                                  for (int buttonIndex = 0;
+                                      buttonIndex < isSelected.length;
+                                      buttonIndex++) {
                                     if (buttonIndex == index) {
                                       isSelected[buttonIndex] = true;
                                     } else {
@@ -323,17 +366,13 @@ class _RegisterState extends State<MyRegisterPage> {
                     Expanded(
                       flex: 2,
                       child: Column(
-                        children: [
-
-                        ],
+                        children: [],
                       ),
                     ),
                     Expanded(
                       flex: 3,
                       child: Column(
-                        children: [
-
-                        ],
+                        children: [],
                       ),
                     ),
                   ],
@@ -350,7 +389,8 @@ class _RegisterState extends State<MyRegisterPage> {
                           child: RaisedButton(
                             onPressed: () {
                               setData();
-                              navigateToRegisterCameraPage(context, data);
+                              navigateToRegisterCameraPage(
+                                  context, widget.data);
                             },
                             color: Colors.green,
                             elevation: 0.0,
@@ -408,5 +448,7 @@ Future navigateToHomePage(context) async {
 
 Future navigateToRegisterCameraPage(context, data) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage(data: data)));
+      context,
+      MaterialPageRoute(
+          builder: (context) => MyRegisterCameraPage(data: data)));
 }

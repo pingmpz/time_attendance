@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'data.dart';
 import 'registerpage.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -61,5 +62,5 @@ class MyHomePage extends StatelessWidget {
 
 Future navigateToRegisterPage(context) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterPage()));
+      context, MaterialPageRoute(builder: (context) => MyRegisterPage(data: new Data())));
 }

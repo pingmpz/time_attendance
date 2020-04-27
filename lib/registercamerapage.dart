@@ -17,7 +17,7 @@ class MyRegisterCameraPage extends StatefulWidget {
 class _RegisterCameraState extends State<MyRegisterCameraPage> {
   Color mycol = Color(0xFF5CA9F0);
   bool mypic = false;
-  File _image;
+  File image;
 
   @override
   void initState() {
@@ -25,15 +25,15 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
   }
 
   Future setData() async {
-    widget.data.image = _image;
+    widget.data.image = image;
   }
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var pic = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
-      _image = image;
-      if (_image == null) {
-        navigateToRegisterPage(context);
+      image = pic;
+      if (image == null) {
+        navigateToRegisterPage(context, widget.data);
       } else {
         setData();
         navigateToRegisterFinalPage(context, widget.data);
@@ -54,9 +54,9 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
     }
 }
 
-Future navigateToRegisterPage(context) async {
+Future navigateToRegisterPage(context, data) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterPage()));
+      context, MaterialPageRoute(builder: (context) => MyRegisterPage(data: data)));
 }
 
 Future navigateToRegisterFinalPage(context, data) async {
