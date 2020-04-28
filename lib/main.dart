@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'homepage.dart';
 
-Future<void> main() async {
+void main() {
   SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]); // !- NOT WORKING
   runApp(MyApp());
 }
