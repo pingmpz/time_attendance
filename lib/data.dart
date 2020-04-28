@@ -7,5 +7,5 @@ class Data {
   String phoneNo;
   int gender = 0; // !- 0-Male 1-Female 2-Other
   File image;
-  bool ready = false;
+  bool ready = false; //Test
 }

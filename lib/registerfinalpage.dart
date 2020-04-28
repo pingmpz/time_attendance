@@ -6,6 +6,9 @@ import 'homepage.dart';
 
 class MyRegisterFinalPage extends StatelessWidget {
   Color mycol = Color(0xFF5CA9F0);
+  int boxWidth = 300;
+  int boxHeight = 60;
+
   Data data;
 
   MyRegisterFinalPage(Data data){
@@ -24,14 +27,10 @@ class MyRegisterFinalPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                    height: 800,
+                    height: 600,
                     child: data.image == null ? SizedBox(width: 10) : Image.file(data.image)),
               ],
             ),
-            Text(data.firstName),
-            Text(data.lastName),
-            Text(data.occupation),
-            Text(data.gender.toString()),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,8 +38,8 @@ class MyRegisterFinalPage extends StatelessWidget {
                 Column(
                   children: [
                     ButtonTheme(
-                      minWidth: 330,
-                      height: 80,
+                      height: boxHeight * 1.0,
+                      minWidth: boxWidth * 1.0,
                       child: RaisedButton(
                         onPressed: () {
                           navigateToHomePage(context);
@@ -49,7 +48,7 @@ class MyRegisterFinalPage extends StatelessWidget {
                         elevation: 0.0,
                         child: const Text('Finish',
                             style: TextStyle(
-                                fontSize: 36,
+                                fontSize: 32,
                                 color: Colors.white,
                                 fontFamily: 'Raleway')),
                         shape: RoundedRectangleBorder(
@@ -63,8 +62,8 @@ class MyRegisterFinalPage extends StatelessWidget {
                 Column(
                   children: [
                     ButtonTheme(
-                      minWidth: 330,
-                      height: 80,
+                      height: boxHeight * 1.0,
+                      minWidth: boxWidth * 1.0,
                       child: RaisedButton(
                         onPressed: () {
                           navigateToRegisterCameraPage(context, data);
@@ -73,7 +72,7 @@ class MyRegisterFinalPage extends StatelessWidget {
                         elevation: 0.0,
                         child: const Text('Retake',
                             style: TextStyle(
-                                fontSize: 36,
+                                fontSize: 32,
                                 color: Colors.white,
                                 fontFamily: 'Raleway')),
                         shape: RoundedRectangleBorder(

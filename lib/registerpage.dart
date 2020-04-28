@@ -15,6 +15,8 @@ class MyRegisterPage extends StatefulWidget {
 
 class _RegisterState extends State<MyRegisterPage> {
   Color mycol = Color(0xFF5CA9F0);
+  int boxWidth = 300;
+  int boxHeight = 60;
 
   TextEditingController firstNameController;
   TextEditingController lastNameController;
@@ -77,7 +79,7 @@ class _RegisterState extends State<MyRegisterPage> {
         },
         child: Center(
           child: Container(
-            margin: const EdgeInsets.all(125.0),
+            margin: const EdgeInsets.all(100.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -86,12 +88,12 @@ class _RegisterState extends State<MyRegisterPage> {
                   children: [
                     const Text('Registeration',
                         style: TextStyle(
-                            fontSize: 72,
+                            fontSize: 60,
                             color: Colors.white,
                             fontFamily: 'Raleway')),
                   ],
                 ),
-                SizedBox(height: 80),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -112,7 +114,8 @@ class _RegisterState extends State<MyRegisterPage> {
                       child: Column(
                         children: [
                           Container(
-                            width: 400,
+                            height: boxHeight * 1.0,
+                            width: boxWidth * 1.0,
                             child: new TextField(
                               controller: firstNameController,
                               inputFormatters: [
@@ -158,7 +161,8 @@ class _RegisterState extends State<MyRegisterPage> {
                       child: Column(
                         children: [
                           Container(
-                            width: 400,
+                            height: boxHeight * 1.0,
+                            width: boxWidth * 1.0,
                             child: new TextField(
                               controller: lastNameController,
                               inputFormatters: [
@@ -189,7 +193,7 @@ class _RegisterState extends State<MyRegisterPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 80),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -210,7 +214,8 @@ class _RegisterState extends State<MyRegisterPage> {
                       child: Column(
                         children: [
                           Container(
-                            width: 400,
+                            height: boxHeight * 1.0,
+                            width: boxWidth * 1.0,
                             child: new TextField(
                               controller: occupationController,
                               style: TextStyle(
@@ -252,7 +257,8 @@ class _RegisterState extends State<MyRegisterPage> {
                       child: Column(
                         children: [
                           Container(
-                            width: 400,
+                            height: boxHeight * 1.0,
+                            width: boxWidth * 1.0,
                             child: new TextField(
                               controller: phoneNoController,
                               inputFormatters: [
@@ -284,7 +290,7 @@ class _RegisterState extends State<MyRegisterPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 80),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -305,8 +311,8 @@ class _RegisterState extends State<MyRegisterPage> {
                       child: Column(
                         children: [
                           Container(
-                            width: 400,
-                            height: 60,
+                            height: boxHeight * 1.0,
+                            width: boxWidth * 1.0,
                             child: ToggleButtons(
                               borderRadius: new BorderRadius.circular(45.0),
                               borderWidth: 10,
@@ -314,7 +320,7 @@ class _RegisterState extends State<MyRegisterPage> {
                               renderBorder: false,
                               children: <Widget>[
                                 Container(
-                                  width: 133,
+                                  width: 100,
                                   child: Center(
                                     child: const Text('Male',
                                         style: TextStyle(
@@ -324,7 +330,7 @@ class _RegisterState extends State<MyRegisterPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 133,
+                                  width: 100,
                                   child: Center(
                                     child: const Text('Female',
                                         style: TextStyle(
@@ -334,7 +340,7 @@ class _RegisterState extends State<MyRegisterPage> {
                                   ),
                                 ),
                                 Container(
-                                  width: 133,
+                                  width: 100,
                                   child: Center(
                                     child: const Text('Other',
                                         style: TextStyle(
@@ -377,15 +383,15 @@ class _RegisterState extends State<MyRegisterPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 80),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
                       children: [
                         ButtonTheme(
-                          minWidth: 330,
-                          height: 80,
+                          height: boxHeight * 1.0,
+                          minWidth: boxWidth * 1.0,
                           child: RaisedButton(
                             onPressed: () {
                               setData();
@@ -396,7 +402,7 @@ class _RegisterState extends State<MyRegisterPage> {
                             elevation: 0.0,
                             child: const Text('Confirm',
                                 style: TextStyle(
-                                    fontSize: 36,
+                                    fontSize: 32,
                                     color: Colors.white,
                                     fontFamily: 'Raleway')),
                             shape: RoundedRectangleBorder(
@@ -410,8 +416,8 @@ class _RegisterState extends State<MyRegisterPage> {
                     Column(
                       children: [
                         ButtonTheme(
-                          minWidth: 330,
-                          height: 80,
+                          height: boxHeight * 1.0,
+                          minWidth: boxWidth * 1.0,
                           child: RaisedButton(
                             onPressed: () {
                               navigateToHomePage(context);
@@ -420,7 +426,7 @@ class _RegisterState extends State<MyRegisterPage> {
                             elevation: 0.0,
                             child: const Text('Cancel',
                                 style: TextStyle(
-                                    fontSize: 36,
+                                    fontSize: 32,
                                     color: Colors.white,
                                     fontFamily: 'Raleway')),
                             shape: RoundedRectangleBorder(
