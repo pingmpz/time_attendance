@@ -5,7 +5,7 @@ import 'registerpage.dart';
 
 class MyHomePage extends StatelessWidget {
 
-  Color mycol = Color(0xFF5CA9F0);
+  final Color mycol = Color(0xFF5CA9F0);
 
   Widget build(BuildContext context) {
     return Scaffold(

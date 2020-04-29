@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'data.dart';
@@ -5,13 +7,13 @@ import 'registercamerapage.dart';
 import 'homepage.dart';
 
 class MyRegisterFinalPage extends StatelessWidget {
-  Color mycol = Color(0xFF5CA9F0);
-  int boxWidth = 300;
-  int boxHeight = 60;
+  final Color mycol = Color(0xFF5CA9F0);
+  final int boxWidth = 300;
+  final int boxHeight = 60;
 
   Data data;
 
-  MyRegisterFinalPage(Data data){
+  MyRegisterFinalPage(Data data) {
     this.data = data;
   }
 
@@ -27,8 +29,9 @@ class MyRegisterFinalPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                    height: 600,
-                    child: data.image == null ? SizedBox(width: 10) : Image.file(data.image)),
+                  height: 600,
+                  child: Image.file(File(data.imagePath)),
+                ),
               ],
             ),
             SizedBox(height: 10),
@@ -98,5 +101,7 @@ Future navigateToHomePage(context) async {
 
 Future navigateToRegisterCameraPage(context, data) async {
   Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage(data: data)));
+      context,
+      MaterialPageRoute(
+          builder: (context) => MyRegisterCameraPage(data: data)));
 }
