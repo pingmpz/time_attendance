@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
 import 'data.dart';
 import 'registerfinalpage.dart';
@@ -39,24 +40,9 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
       print(e);
     }
     if (!mounted) return;
-    setState(() async {
+    setState(() {
       _isReady = true;
     });
-  }
-
-  void snap() async {
-    try {
-      await controller.initialize();
-      final path = join(
-        (await getTemporaryDirectory()).path,
-        '${DateTime.now()}.png',
-      );
-      await controller.takePicture(path);
-      setData(path);
-      navigateToRegisterFinalPage(context, widget.data);
-    } catch (e) {
-      print(e);
-    }
   }
 
   Future setData(String path) async {
@@ -67,7 +53,38 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
     if (!_isReady) return new Container();
     return Scaffold(
       backgroundColor: mycol,
-      body: CameraPreview(controller),
+      body: Stack(
+        children: <Widget>[
+          CameraPreview(controller),
+          Center(
+            child: SlideCountdownClock(
+              duration: Duration(seconds: 5),
+              slideDirection: SlideDirection.Up,
+              textStyle: TextStyle(
+                fontSize: 72,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(10),
+              onDone: () async {
+                try {
+                  await controller.initialize();
+                  final path = join(
+                      (await getTemporaryDirectory()).path,
+                '${DateTime.now()}.png',
+                );
+                await controller.takePicture(path);
+                setData(path);
+                navigateToRegisterFinalPage(context, widget.data);
+                } catch (e) {
+                print(e);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+      /*
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.camera_alt),
         onPressed: () async {
@@ -85,6 +102,7 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
           }
         },
       ),
+       */
     );
   }
 }

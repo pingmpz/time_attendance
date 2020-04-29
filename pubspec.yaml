@@ -13,8 +13,7 @@ dependencies:
   camera:
   path_provider:
   path:
-
-  image_picker:
+  slide_countdown_clock:
 
 dev_dependencies:
   flutter_test:
