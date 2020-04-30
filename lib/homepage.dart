@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'data.dart';
+import 'identificationpage.dart';
 import 'registerpage.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -39,7 +40,7 @@ class MyHomePage extends StatelessWidget {
               height: 80,
               child: RaisedButton(
                 onPressed: () {
-                  // !- NAVIGATOR
+                  navigateToIdentificationPage(context);
                 },
                 color: mycol,
                 elevation: 0.0,
@@ -63,4 +64,9 @@ class MyHomePage extends StatelessWidget {
 Future navigateToRegisterPage(context) async {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => MyRegisterPage(data: new Data())));
+}
+
+Future navigateToIdentificationPage(context) async {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => MyIdentificationPage()));
 }

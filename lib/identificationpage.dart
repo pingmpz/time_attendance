@@ -6,19 +6,17 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
-import 'data.dart';
-import 'registerfinalpage.dart';
-import 'registerpage.dart';
+import 'homepage.dart';
 
-class MyRegisterCameraPage extends StatefulWidget {
-  final Data data;
-  const MyRegisterCameraPage({Key key, this.data}) : super(key: key);
+
+class MyIdentificationPage extends StatefulWidget {
+  const MyIdentificationPage({Key key}) : super(key: key);
 
   @override
-  _RegisterCameraState createState() => _RegisterCameraState();
+  _IdentificationState createState() => _IdentificationState();
 }
 
-class _RegisterCameraState extends State<MyRegisterCameraPage> {
+class _IdentificationState extends State<MyIdentificationPage> {
   Color mycol = Color(0xFF5CA9F0);
 
   List<CameraDescription> cameras;
@@ -43,10 +41,6 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
     setState(() {
       _isReady = true;
     });
-  }
-
-  Future setData(String path) async {
-    widget.data.imagePath = path;
   }
 
   Widget build(BuildContext context) {
@@ -74,8 +68,11 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
                 '${DateTime.now()}.png',
                 );
                 await controller.takePicture(path);
-                setData(path);
-                navigateToRegisterFinalPage(context, widget.data);
+                  setState(() {
+                    /*
+                        // !- Database contact
+                     */
+                  });
                 } catch (e) {
                 print(e);
                 }
@@ -88,12 +85,7 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
   }
 }
 
-Future navigateToRegisterPage(context, data) async {
+Future navigateToHomePage(context) async {
   Navigator.push(context,
-      MaterialPageRoute(builder: (context) => MyRegisterPage(data: data)));
-}
-
-Future navigateToRegisterFinalPage(context, data) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => MyRegisterFinalPage(data)));
+      MaterialPageRoute(builder: (context) => MyHomePage()));
 }

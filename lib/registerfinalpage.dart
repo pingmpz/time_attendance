@@ -25,16 +25,28 @@ class MyRegisterFinalPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 600,
-                  child: Image.file(File(data.imagePath)),
-                ),
-              ],
+            const Text('Welcome',
+                style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.white,
+                    fontFamily: 'Raleway')),
+            SizedBox(height: 10),
+            Container(
+              child: Image.file(File(data.imagePath)),
             ),
             SizedBox(height: 10),
+            Text('${data.firstName} ${data.lastName}',
+                style: TextStyle(
+                    fontSize: 32,
+                    color: Colors.white,
+                    fontFamily: 'Raleway')),
+            SizedBox(height: 10),
+            Text('${data.occupation}',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontFamily: 'Raleway')),
+            SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
