@@ -52,6 +52,8 @@ class MyRegisterFinalPage extends StatelessWidget {
               child: Image.file(File(Data.imagePath)),
             ),
             _buildSpace_10(),
+            _customText('${Data.imagePath}', 12), // !- For testing only
+            _buildSpace_10(),
             _customText('${Data.firstName} ${Data.lastName}', 32),
             _buildSpace_10(),
             _customText('${Data.occupation}', 18),
