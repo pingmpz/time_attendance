@@ -419,6 +419,18 @@ class _RegisterState extends State<MyRegisterPage> {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              firstNameController.text = 'Yashawantatul';
+              lastNameController.text = 'Mangalmurti';
+              occupationController.text = 'Programmer';
+              phoneNoController.text = '0970757553';
+            });
+          },
+          child: Icon(Icons.flash_auto),
+          backgroundColor: Colors.amberAccent,
+        ),
       ),
     );
   }
