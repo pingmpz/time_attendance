@@ -1,460 +1,382 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'data.dart';
 import 'homepage.dart';
 import 'registercamerapage.dart';
 
+import 'data.dart';
+
+/*
+   !- NOTE
+   Button - Size (300 x 60)
+   Toggle Button- Size ((MediaQuery.of(context).size.width - (marginSize * 2)) * 0.1 x 60)
+ */
+
 class MyRegisterPage extends StatefulWidget {
-  final Data data;
-  const MyRegisterPage({Key key, this.data}) : super(key: key);
+  const MyRegisterPage({Key key}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<MyRegisterPage> {
-  Color mycol = Color(0xFF5CA9F0);
-  int boxWidth = 300;
-  int boxHeight = 60;
+  final Color mycol = Color(0xFF5CA9F0);
+  final double marginSize = 100.0;
+  final double boxHeight = 60.0;
 
-  TextEditingController firstNameController;
-  TextEditingController lastNameController;
-  TextEditingController occupationController;
-  TextEditingController phoneNoController;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController occupationController = TextEditingController();
+  TextEditingController phoneNoController = TextEditingController();
   List<bool> isSelected = [true, false, false];
-  bool prepared = false;
 
   @override
   void initState() {
     super.initState();
   }
 
-  Future prepareData() async {
-      if(prepared == false) {
-        if (widget.data.ready == true) {
-          firstNameController = TextEditingController(text: widget.data.firstName);
-          lastNameController = TextEditingController(text: widget.data.lastName);
-          occupationController = TextEditingController(text: widget.data.occupation);
-          phoneNoController = TextEditingController(text: widget.data.phoneNo);
-          for (int i = 0; i < isSelected.length; i++) {
-            isSelected[i] = (i == widget.data.gender) ? true : false;
-          }
-          // !- CLEAR IMAGE ???
-        } else {
-          widget.data.ready = true;
-          firstNameController = TextEditingController();
-          lastNameController = TextEditingController();
-          occupationController = TextEditingController();
-          phoneNoController = TextEditingController();
-          isSelected = [true, false, false];
-        }
-        prepared = true;
-      }
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    occupationController.dispose();
+    phoneNoController.dispose();
+    super.dispose();
   }
 
-  Future setData() async {
-    widget.data.firstName = firstNameController.text;
-    widget.data.lastName = lastNameController.text;
-    widget.data.occupation = occupationController.text;
-    widget.data.phoneNo = phoneNoController.text;
+  void setData() {
+    Data.firstName = firstNameController.text;
+    Data.lastName = lastNameController.text;
+    Data.occupation = occupationController.text;
+    Data.phoneNo = phoneNoController.text;
     for (int i = 0; i < isSelected.length; i++) {
       if (isSelected[i] == true) {
-        widget.data.gender = i;
+        Data.gender = i;
         break;
       }
     }
   }
 
+  Widget _buildSpace() {
+    return SizedBox(width: 40, height: 40);
+  }
+
+  Widget _customText(String txt, double size) {
+    return Text(txt,
+        style: TextStyle(
+            fontSize: size, color: Colors.white, fontFamily: 'Raleway'));
+  }
+
+  TextStyle _customTextStyle(double size) {
+    return TextStyle(fontSize: size, color: mycol, fontFamily: 'Raleway');
+  }
+
+  Future navigateToHomePage(context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyHomePage()));
+  }
+
+  Future navigateToRegisterCameraPage(context) async {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MyRegisterCameraPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
-    prepareData();
     return Scaffold(
       backgroundColor: mycol,
       resizeToAvoidBottomPadding: false,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context)
-              .unfocus(); // !- NOT WORKING (FOR CLEAR KEYBOARD)
-        },
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.all(100.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text('Registeration',
-                        style: TextStyle(
-                            fontSize: 60,
-                            color: Colors.white,
-                            fontFamily: 'Raleway')),
-                  ],
-                ),
-                SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          const Text('First Name',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: 'Raleway')),
-                        ],
-                      ),
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.all(marginSize),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _customText('Registeration', 60),
+                ],
+              ),
+              _buildSpace(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        _customText('First Name', 24),
+                      ],
                     ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: boxHeight * 1.0,
-                            width: boxWidth * 1.0,
-                            child: new TextField(
-                              controller: firstNameController,
-                              inputFormatters: [
-                                WhitelistingTextInputFormatter(
-                                    RegExp("[a-z,A-Z]"))
-                              ],
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: mycol,
-                                  fontFamily: 'Raleway'),
-                              decoration: new InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide:
-                                      BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          const Text('Last Name',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: 'Raleway')),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: boxHeight * 1.0,
-                            width: boxWidth * 1.0,
-                            child: new TextField(
-                              controller: lastNameController,
-                              inputFormatters: [
-                                WhitelistingTextInputFormatter(
-                                    RegExp("[a-z,A-Z]"))
-                              ],
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: mycol,
-                                  fontFamily: 'Raleway'),
-                              decoration: new InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide:
-                                      BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          const Text('Occupation',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: 'Raleway')),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: boxHeight * 1.0,
-                            width: boxWidth * 1.0,
-                            child: new TextField(
-                              controller: occupationController,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: mycol,
-                                  fontFamily: 'Raleway'),
-                              decoration: new InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide:
-                                      BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          const Text('Phone No.',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: 'Raleway')),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: boxHeight * 1.0,
-                            width: boxWidth * 1.0,
-                            child: new TextField(
-                              controller: phoneNoController,
-                              inputFormatters: [
-                                WhitelistingTextInputFormatter(RegExp("[0-9]")),
-                                LengthLimitingTextInputFormatter(10),
-                              ],
-                              keyboardType: TextInputType.number,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: mycol,
-                                  fontFamily: 'Raleway'),
-                              decoration: new InputDecoration(
-                                filled: true,
-                                fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide:
-                                      BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [
-                          const Text('Gender',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontFamily: 'Raleway')),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: boxHeight * 1.0,
-                            width: boxWidth * 1.0,
-                            child: ToggleButtons(
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        new TextField(
+                          controller: firstNameController,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))
+                          ],
+                          style: _customTextStyle(24),
+                          decoration: new InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(45.0),
-                              borderWidth: 10,
-                              fillColor: Colors.blueAccent,
-                              renderBorder: false,
-                              children: <Widget>[
-                                Container(
-                                  width: 100,
-                                  child: Center(
-                                    child: const Text('Male',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: Colors.white,
-                                            fontFamily: 'Raleway')),
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  child: Center(
-                                    child: const Text('Female',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: Colors.white,
-                                            fontFamily: 'Raleway')),
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  child: Center(
-                                    child: const Text('Other',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: Colors.white,
-                                            fontFamily: 'Raleway')),
-                                  ),
-                                ),
-                              ],
-                              onPressed: (int index) {
-                                setState(() {
-                                  for (int buttonIndex = 0;
-                                      buttonIndex < isSelected.length;
-                                      buttonIndex++) {
-                                    if (buttonIndex == index) {
-                                      isSelected[buttonIndex] = true;
-                                    } else {
-                                      isSelected[buttonIndex] = false;
-                                    }
-                                  }
-                                });
-                              },
-                              isSelected: isSelected,
+                              borderSide: BorderSide(color: Colors.greenAccent),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.white),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        children: [],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        children: [],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
                       children: [
-                        ButtonTheme(
-                          height: boxHeight * 1.0,
-                          minWidth: boxWidth * 1.0,
-                          child: RaisedButton(
-                            onPressed: () {
-                              setData();
-                              navigateToRegisterCameraPage(
-                                  context, widget.data);
-                            },
-                            color: Colors.green,
-                            elevation: 0.0,
-                            child: const Text('Confirm',
-                                style: TextStyle(
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                    fontFamily: 'Raleway')),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(45.0),
-                                side: BorderSide(color: Colors.white)),
+                        _customText('Last Name', 24),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        new TextField(
+                          controller: lastNameController,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))
+                          ],
+                          style: _customTextStyle(24),
+                          decoration: new InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.greenAccent),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(width: 40),
-                    Column(
+                  ),
+                ],
+              ),
+              _buildSpace(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
                       children: [
-                        ButtonTheme(
-                          height: boxHeight * 1.0,
-                          minWidth: boxWidth * 1.0,
-                          child: RaisedButton(
-                            onPressed: () {
-                              navigateToHomePage(context);
-                            },
-                            color: Colors.red,
-                            elevation: 0.0,
-                            child: const Text('Cancel',
-                                style: TextStyle(
-                                    fontSize: 32,
-                                    color: Colors.white,
-                                    fontFamily: 'Raleway')),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(45.0),
-                                side: BorderSide(color: Colors.white)),
+                        _customText('Occupation', 24),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        new TextField(
+                          controller: occupationController,
+                          style: _customTextStyle(24),
+                          decoration: new InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.greenAccent),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        _customText('Phone No.', 24),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        new TextField(
+                          controller: phoneNoController,
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter(RegExp("[0-9]")),
+                            LengthLimitingTextInputFormatter(10),
+                          ],
+                          keyboardType: TextInputType.number,
+                          style: _customTextStyle(24),
+                          decoration: new InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.greenAccent),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              _buildSpace(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        _customText('Gender', 24),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: boxHeight,
+                          child: ToggleButtons(
+                            borderRadius: new BorderRadius.circular(45.0),
+                            borderWidth: 10,
+                            fillColor: Colors.blueAccent,
+                            renderBorder: false,
+                            children: <Widget>[
+                              Container(
+                                width: (MediaQuery.of(context).size.width -
+                                        (marginSize * 2)) *
+                                    0.1,
+                                child: Center(
+                                  child: _customText('Male', 24),
+                                ),
+                              ),
+                              Container(
+                                width: (MediaQuery.of(context).size.width -
+                                        (marginSize * 2)) *
+                                    0.1,
+                                child: Center(
+                                  child: _customText('Female', 24),
+                                ),
+                              ),
+                              Container(
+                                width: (MediaQuery.of(context).size.width -
+                                        (marginSize * 2)) *
+                                    0.1,
+                                child: Center(
+                                  child: _customText('Other', 24),
+                                ),
+                              ),
+                            ],
+                            onPressed: (int index) {
+                              setState(() {
+                                for (int buttonIndex = 0;
+                                    buttonIndex < isSelected.length;
+                                    buttonIndex++) {
+                                  if (buttonIndex == index) {
+                                    isSelected[buttonIndex] = true;
+                                  } else {
+                                    isSelected[buttonIndex] = false;
+                                  }
+                                }
+                              });
+                            },
+                            isSelected: isSelected,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: [],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      children: [],
+                    ),
+                  ),
+                ],
+              ),
+              _buildSpace(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      ButtonTheme(
+                        height: 60,
+                        minWidth: 300,
+                        child: RaisedButton(
+                          onPressed: () {
+                            setData();
+                            navigateToRegisterCameraPage(context);
+                          },
+                          color: Colors.green,
+                          elevation: 0.0,
+                          child: _customText('Confirm', 32),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              side: BorderSide(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  _buildSpace(),
+                  Column(
+                    children: [
+                      ButtonTheme(
+                        height: 60,
+                        minWidth: 300,
+                        child: RaisedButton(
+                          onPressed: () {
+                            navigateToHomePage(context);
+                          },
+                          color: Colors.red,
+                          elevation: 0.0,
+                          child: _customText('Cancel', 32),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(45.0),
+                              side: BorderSide(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-}
-
-Future navigateToHomePage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyHomePage()));
-}
-
-Future navigateToRegisterCameraPage(context, data) async {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => MyRegisterCameraPage(data: data)));
 }

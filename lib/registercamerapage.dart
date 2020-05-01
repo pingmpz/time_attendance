@@ -8,11 +8,9 @@ import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
 import 'data.dart';
 import 'registerfinalpage.dart';
-import 'registerpage.dart';
 
 class MyRegisterCameraPage extends StatefulWidget {
-  final Data data;
-  const MyRegisterCameraPage({Key key, this.data}) : super(key: key);
+  const MyRegisterCameraPage({Key key}) : super(key: key);
 
   @override
   _RegisterCameraState createState() => _RegisterCameraState();
@@ -22,7 +20,7 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
   Color mycol = Color(0xFF5CA9F0);
 
   List<CameraDescription> cameras;
-  CameraController controller;
+  CameraController cameraController;
   bool _isReady = false;
 
   @override
@@ -31,11 +29,18 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
     setupCameras();
   }
 
+  @override
+  void dispose() {
+    cameraController.dispose();
+    super.dispose();
+  }
+
   Future<void> setupCameras() async {
     try {
       cameras = await availableCameras();
-      controller = new CameraController(cameras[0], ResolutionPreset.medium);
-      await controller.initialize();
+      cameraController =
+          new CameraController(cameras[0], ResolutionPreset.medium);
+      await cameraController.initialize();
     } on CameraException catch (e) {
       print(e);
     }
@@ -45,17 +50,23 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
     });
   }
 
-  Future setData(String path) async {
-    widget.data.imagePath = path;
+  void setData(String path) {
+    Data.imagePath = path;
   }
 
+  Future navigateToRegisterFinalPage(context) async {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MyRegisterFinalPage()));
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!_isReady) return new Container();
     return Scaffold(
       backgroundColor: mycol,
       body: Stack(
         children: <Widget>[
-          CameraPreview(controller),
+          CameraPreview(cameraController),
           Center(
             child: SlideCountdownClock(
               duration: Duration(seconds: 5),
@@ -63,21 +74,21 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
               textStyle: TextStyle(
                 fontSize: 72,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.transparent,
               ),
               padding: EdgeInsets.all(10),
               onDone: () async {
                 try {
-                  await controller.initialize();
+                  await cameraController.initialize();
                   final path = join(
-                      (await getTemporaryDirectory()).path,
-                '${DateTime.now()}.png',
-                );
-                await controller.takePicture(path);
-                setData(path);
-                navigateToRegisterFinalPage(context, widget.data);
+                    (await getTemporaryDirectory()).path,
+                    '${DateTime.now()}.png',
+                  );
+                  await cameraController.takePicture(path);
+                  setData(path);
+                  navigateToRegisterFinalPage(context);
                 } catch (e) {
-                print(e);
+                  print(e);
                 }
               },
             ),
@@ -86,14 +97,4 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
       ),
     );
   }
-}
-
-Future navigateToRegisterPage(context, data) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => MyRegisterPage(data: data)));
-}
-
-Future navigateToRegisterFinalPage(context, data) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => MyRegisterFinalPage(data)));
 }

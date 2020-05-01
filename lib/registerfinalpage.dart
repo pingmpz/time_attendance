@@ -6,15 +6,36 @@ import 'data.dart';
 import 'registercamerapage.dart';
 import 'homepage.dart';
 
+/*
+   !- NOTE
+   Button - Size (300 x 60)
+ */
+
 class MyRegisterFinalPage extends StatelessWidget {
   final Color mycol = Color(0xFF5CA9F0);
-  final int boxWidth = 300;
-  final int boxHeight = 60;
 
-  Data data;
+  Widget _customText(String txt, double size) {
+    return Text(txt,
+        style: TextStyle(
+            fontSize: size, color: Colors.white, fontFamily: 'Raleway'));
+  }
 
-  MyRegisterFinalPage(Data data) {
-    this.data = data;
+  Widget _buildSpace_10() {
+    return SizedBox(width: 10, height: 10);
+  }
+
+  Widget _buildSpace_40() {
+    return SizedBox(width: 40, height: 40);
+  }
+
+  Future navigateToHomePage(context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyHomePage()));
+  }
+
+  Future navigateToRegisterCameraPage(context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyRegisterCameraPage()));
   }
 
   @override
@@ -25,47 +46,31 @@ class MyRegisterFinalPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Welcome',
-                style: TextStyle(
-                    fontSize: 50,
-                    color: Colors.white,
-                    fontFamily: 'Raleway')),
-            SizedBox(height: 10),
+            _customText('Welcome', 50),
+            _buildSpace_10(),
             Container(
-              child: Image.file(File(data.imagePath)),
+              child: Image.file(File(Data.imagePath)),
             ),
-            SizedBox(height: 10),
-            Text('${data.firstName} ${data.lastName}',
-                style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.white,
-                    fontFamily: 'Raleway')),
-            SizedBox(height: 10),
-            Text('${data.occupation}',
-                style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontFamily: 'Raleway')),
-            SizedBox(height: 50),
+            _buildSpace_10(),
+            _customText('${Data.firstName} ${Data.lastName}', 32),
+            _buildSpace_10(),
+            _customText('${Data.occupation}', 18),
+            _buildSpace_40(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
                     ButtonTheme(
-                      height: boxHeight * 1.0,
-                      minWidth: boxWidth * 1.0,
+                      minWidth: 300,
+                      height: 60,
                       child: RaisedButton(
                         onPressed: () {
                           navigateToHomePage(context);
                         },
                         color: Colors.green,
                         elevation: 0.0,
-                        child: const Text('Finish',
-                            style: TextStyle(
-                                fontSize: 32,
-                                color: Colors.white,
-                                fontFamily: 'Raleway')),
+                        child: _customText('Finish', 32),
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(45.0),
                             side: BorderSide(color: Colors.white)),
@@ -73,23 +78,19 @@ class MyRegisterFinalPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(width: 40),
+                _buildSpace_40(),
                 Column(
                   children: [
                     ButtonTheme(
-                      height: boxHeight * 1.0,
-                      minWidth: boxWidth * 1.0,
+                      minWidth: 300,
+                      height: 60,
                       child: RaisedButton(
                         onPressed: () {
-                          navigateToRegisterCameraPage(context, data);
+                          navigateToRegisterCameraPage(context);
                         },
                         color: Colors.deepOrange,
                         elevation: 0.0,
-                        child: const Text('Retake',
-                            style: TextStyle(
-                                fontSize: 32,
-                                color: Colors.white,
-                                fontFamily: 'Raleway')),
+                        child: _customText('Retake', 32),
                         shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(45.0),
                             side: BorderSide(color: Colors.white)),
@@ -104,16 +105,4 @@ class MyRegisterFinalPage extends StatelessWidget {
       ),
     );
   }
-}
-
-Future navigateToHomePage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyHomePage()));
-}
-
-Future navigateToRegisterCameraPage(context, data) async {
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => MyRegisterCameraPage(data: data)));
 }

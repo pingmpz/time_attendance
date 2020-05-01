@@ -1,9 +1,8 @@
 class Data {
-  String firstName;
-  String lastName;
-  String occupation;
-  String phoneNo;
-  int gender = 0; // !- 0-Male 1-Female 2-Other
-  String imagePath;
-  bool ready = false; //Test
+  static String firstName;
+  static String lastName;
+  static String occupation;
+  static String phoneNo;
+  static int gender = 0; // !- 0-Male 1-Female 2-Other
+  static String imagePath;
 }

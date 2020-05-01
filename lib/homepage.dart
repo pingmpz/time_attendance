@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
 
-import 'data.dart';
 import 'identificationpage.dart';
 import 'registerpage.dart';
 
-class MyHomePage extends StatelessWidget {
+/*
+   !- NOTE
+   Button - Size (360 x 80)
+ */
 
+class MyHomePage extends StatelessWidget {
   final Color mycol = Color(0xFF5CA9F0);
 
+  Widget _customText(String txt, double size) {
+    return Text(txt,
+        style: TextStyle(
+            fontSize: size, color: Colors.white, fontFamily: 'Raleway'));
+  }
+
+  Future navigateToRegisterPage(context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyRegisterPage()));
+  }
+
+  Future navigateToIdentificationPage(context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MyIdentificationPage()));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mycol,
@@ -24,11 +44,7 @@ class MyHomePage extends StatelessWidget {
                 },
                 color: mycol,
                 elevation: 0.0,
-                child: const Text('Registeration',
-                    style: TextStyle(
-                        fontSize: 36,
-                        color: Colors.white,
-                        fontFamily: 'Raleway')),
+                child: _customText('Registeration', 36),
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(45.0),
                     side: BorderSide(color: Colors.white)),
@@ -44,11 +60,7 @@ class MyHomePage extends StatelessWidget {
                 },
                 color: mycol,
                 elevation: 0.0,
-                child: const Text('Identification',
-                    style: TextStyle(
-                        fontSize: 36,
-                        color: Colors.white,
-                        fontFamily: 'Raleway')),
+                child: _customText('Identification', 36),
                 shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(45.0),
                     side: BorderSide(color: Colors.white)),
@@ -59,14 +71,4 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-Future navigateToRegisterPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyRegisterPage(data: new Data())));
-}
-
-Future navigateToIdentificationPage(context) async {
-  Navigator.push(
-      context, MaterialPageRoute(builder: (context) => MyIdentificationPage()));
 }

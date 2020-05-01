@@ -6,9 +6,6 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
-import 'homepage.dart';
-
-
 class MyIdentificationPage extends StatefulWidget {
   const MyIdentificationPage({Key key}) : super(key: key);
 
@@ -20,7 +17,7 @@ class _IdentificationState extends State<MyIdentificationPage> {
   Color mycol = Color(0xFF5CA9F0);
 
   List<CameraDescription> cameras;
-  CameraController controller;
+  CameraController cameraController;
   bool _isReady = false;
 
   @override
@@ -29,11 +26,17 @@ class _IdentificationState extends State<MyIdentificationPage> {
     setupCameras();
   }
 
+  @override
+  void dispose() {
+    cameraController.dispose();
+    super.dispose();
+  }
+
   Future<void> setupCameras() async {
     try {
       cameras = await availableCameras();
-      controller = new CameraController(cameras[0], ResolutionPreset.medium);
-      await controller.initialize();
+      cameraController = new CameraController(cameras[0], ResolutionPreset.medium);
+      await cameraController.initialize();
     } on CameraException catch (e) {
       print(e);
     }
@@ -49,7 +52,7 @@ class _IdentificationState extends State<MyIdentificationPage> {
       backgroundColor: mycol,
       body: Stack(
         children: <Widget>[
-          CameraPreview(controller),
+          CameraPreview(cameraController),
           Center(
             child: SlideCountdownClock(
               duration: Duration(seconds: 5),
@@ -57,21 +60,21 @@ class _IdentificationState extends State<MyIdentificationPage> {
               textStyle: TextStyle(
                 fontSize: 72,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.transparent,
               ),
               padding: EdgeInsets.all(10),
               onDone: () async {
                 try {
-                  await controller.initialize();
+                  await cameraController.initialize();
                   final path = join(
                       (await getTemporaryDirectory()).path,
                 '${DateTime.now()}.png',
                 );
-                await controller.takePicture(path);
+                await cameraController.takePicture(path);
                   setState(() {
                     /*
                         // !- Database contact
-                     */
+                    */
                   });
                 } catch (e) {
                 print(e);
@@ -83,9 +86,4 @@ class _IdentificationState extends State<MyIdentificationPage> {
       ),
     );
   }
-}
-
-Future navigateToHomePage(context) async {
-  Navigator.push(context,
-      MaterialPageRoute(builder: (context) => MyHomePage()));
 }
