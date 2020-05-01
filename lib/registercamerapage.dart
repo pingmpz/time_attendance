@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:countdown_flutter/countdown_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:slide_countdown_clock/slide_countdown_clock.dart';
 
 import 'data.dart';
 import 'registerfinalpage.dart';
@@ -33,6 +33,12 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
   void dispose() {
     cameraController.dispose();
     super.dispose();
+  }
+
+  Widget _customText(String txt, double size) {
+    return Text(txt,
+        style: TextStyle(
+            fontSize: size, color: Colors.white, fontFamily: 'Raleway'));
   }
 
   Future<void> setupCameras() async {
@@ -67,29 +73,27 @@ class _RegisterCameraState extends State<MyRegisterCameraPage> {
       body: Stack(
         children: <Widget>[
           CameraPreview(cameraController),
-          Center(
-            child: SlideCountdownClock(
+          Container(
+            alignment: Alignment.topCenter,
+            child:
+            Countdown(
               duration: Duration(seconds: 5),
-              slideDirection: SlideDirection.Up,
-              textStyle: TextStyle(
-                fontSize: 72,
-                fontWeight: FontWeight.bold,
-                color: Colors.transparent,
-              ),
-              padding: EdgeInsets.all(10),
-              onDone: () async {
+              onFinish: () async {
                 try {
                   await cameraController.initialize();
                   final path = join(
-                    (await getTemporaryDirectory()).path,
-                    '${DateTime.now()}.png',
-                  );
-                  await cameraController.takePicture(path);
-                  setData(path);
-                  navigateToRegisterFinalPage(context);
+                      (await getTemporaryDirectory()).path,
+                '${DateTime.now()}.png',
+                );
+                await cameraController.takePicture(path);
+                setData(path);
+                navigateToRegisterFinalPage(context);
                 } catch (e) {
-                  print(e);
+                print(e);
                 }
+              },
+              builder: (BuildContext ctx, Duration remaining) {
+                return  _customText('${remaining.inSeconds}', 72);
               },
             ),
           ),
