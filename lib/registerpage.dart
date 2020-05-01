@@ -24,14 +24,17 @@ class _RegisterState extends State<MyRegisterPage> {
   final double marginSize = 100.0;
   final double boxHeight = 60.0;
 
+  // !- Input Controllers
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController occupationController = TextEditingController();
   TextEditingController phoneNoController = TextEditingController();
   List<bool> isSelected = [true, false, false];
 
+  // !- Validation
   bool allValidate = true;
   bool firstNameValidate = true;
+
   bool lastNameValidate = true;
   bool occupationValidate = true;
   bool phoneNoValidate = true;
@@ -52,27 +55,11 @@ class _RegisterState extends State<MyRegisterPage> {
 
   void validate() {
     setState(() {
-      firstNameValidate = (firstNameController == null || firstNameController.text.isEmpty)
-              ? false
-              : true;
-      lastNameValidate =
-          (lastNameController == null || lastNameController.text.isEmpty)
-              ? false
-              : true;
-      occupationValidate =
-          (occupationController == null || occupationController.text.isEmpty)
-              ? false
-              : true;
-      phoneNoValidate =
-          (phoneNoController == null || phoneNoController.text.isEmpty)
-              ? false
-              : true;
-      allValidate = (firstNameValidate &&
-              lastNameValidate &&
-              occupationValidate &&
-              phoneNoValidate)
-          ? true
-          : false;
+      firstNameValidate = (firstNameController == null || firstNameController.text.isEmpty) ? false : true;
+      lastNameValidate = (lastNameController == null || lastNameController.text.isEmpty) ? false : true;
+      occupationValidate = (occupationController == null || occupationController.text.isEmpty) ? false : true;
+      phoneNoValidate = (phoneNoController == null || phoneNoController.text.isEmpty) ? false : true;
+      allValidate = (firstNameValidate && lastNameValidate && occupationValidate && phoneNoValidate) ? true : false;
     });
   }
 
@@ -99,14 +86,17 @@ class _RegisterState extends State<MyRegisterPage> {
             fontSize: size, color: Colors.white, fontFamily: 'Raleway'));
   }
 
+  // !- For TextField only.
   TextStyle _customTextStyle(double size) {
     return TextStyle(fontSize: size, color: mycol, fontFamily: 'Raleway');
   }
 
+  // !- For TextField > Error Text only.
   TextStyle _hiddenErrorTextStyle() {
     return TextStyle(color: Colors.transparent, fontSize: 0, height: 0);
   }
 
+  // !- For TextField only.
   InputBorder _customInputBorder(Color color) {
     return OutlineInputBorder(
         borderRadius: new BorderRadius.circular(45.0),
