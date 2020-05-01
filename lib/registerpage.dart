@@ -30,6 +30,12 @@ class _RegisterState extends State<MyRegisterPage> {
   TextEditingController phoneNoController = TextEditingController();
   List<bool> isSelected = [true, false, false];
 
+  bool allValidate = true;
+  bool firstNameValidate = true;
+  bool lastNameValidate = true;
+  bool occupationValidate = true;
+  bool phoneNoValidate = true;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +48,32 @@ class _RegisterState extends State<MyRegisterPage> {
     occupationController.dispose();
     phoneNoController.dispose();
     super.dispose();
+  }
+
+  void validate() {
+    setState(() {
+      firstNameValidate = (firstNameController == null || firstNameController.text.isEmpty)
+              ? false
+              : true;
+      lastNameValidate =
+          (lastNameController == null || lastNameController.text.isEmpty)
+              ? false
+              : true;
+      occupationValidate =
+          (occupationController == null || occupationController.text.isEmpty)
+              ? false
+              : true;
+      phoneNoValidate =
+          (phoneNoController == null || phoneNoController.text.isEmpty)
+              ? false
+              : true;
+      allValidate = (firstNameValidate &&
+              lastNameValidate &&
+              occupationValidate &&
+              phoneNoValidate)
+          ? true
+          : false;
+    });
   }
 
   void setData() {
@@ -69,6 +101,16 @@ class _RegisterState extends State<MyRegisterPage> {
 
   TextStyle _customTextStyle(double size) {
     return TextStyle(fontSize: size, color: mycol, fontFamily: 'Raleway');
+  }
+
+  TextStyle _hiddenErrorTextStyle() {
+    return TextStyle(color: Colors.transparent, fontSize: 0, height: 0);
+  }
+
+  InputBorder _customInputBorder(Color color) {
+    return OutlineInputBorder(
+        borderRadius: new BorderRadius.circular(45.0),
+        borderSide: BorderSide(color: color));
   }
 
   Future navigateToHomePage(context) async {
@@ -121,20 +163,21 @@ class _RegisterState extends State<MyRegisterPage> {
                             new TextField(
                               controller: firstNameController,
                               inputFormatters: [
-                                WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))
+                                WhitelistingTextInputFormatter(
+                                    RegExp("[a-z,A-Z]"))
                               ],
                               style: _customTextStyle(24),
                               decoration: new InputDecoration(
+                                errorText: firstNameValidate ? null : 'Required',
+                                errorStyle: _hiddenErrorTextStyle(),
                                 filled: true,
                                 fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
+                                focusedErrorBorder:
+                                    _customInputBorder(Colors.red),
+                                errorBorder: _customInputBorder(Colors.red),
+                                focusedBorder:
+                                    _customInputBorder(Colors.greenAccent),
+                                enabledBorder: _customInputBorder(Colors.white),
                               ),
                             ),
                           ],
@@ -155,20 +198,21 @@ class _RegisterState extends State<MyRegisterPage> {
                             new TextField(
                               controller: lastNameController,
                               inputFormatters: [
-                                WhitelistingTextInputFormatter(RegExp("[a-z,A-Z]"))
+                                WhitelistingTextInputFormatter(
+                                    RegExp("[a-z,A-Z]"))
                               ],
                               style: _customTextStyle(24),
                               decoration: new InputDecoration(
+                                errorText: lastNameValidate ? null : 'Required',
+                                errorStyle: _hiddenErrorTextStyle(),
                                 filled: true,
                                 fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
+                                focusedErrorBorder:
+                                    _customInputBorder(Colors.red),
+                                errorBorder: _customInputBorder(Colors.red),
+                                focusedBorder:
+                                    _customInputBorder(Colors.greenAccent),
+                                enabledBorder: _customInputBorder(Colors.white),
                               ),
                             ),
                           ],
@@ -196,16 +240,16 @@ class _RegisterState extends State<MyRegisterPage> {
                               controller: occupationController,
                               style: _customTextStyle(24),
                               decoration: new InputDecoration(
+                                errorText: occupationValidate ? null : 'Required',
+                                errorStyle: _hiddenErrorTextStyle(),
                                 filled: true,
                                 fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
+                                focusedErrorBorder:
+                                    _customInputBorder(Colors.red),
+                                errorBorder: _customInputBorder(Colors.red),
+                                focusedBorder:
+                                    _customInputBorder(Colors.greenAccent),
+                                enabledBorder: _customInputBorder(Colors.white),
                               ),
                             ),
                           ],
@@ -232,16 +276,16 @@ class _RegisterState extends State<MyRegisterPage> {
                               keyboardType: TextInputType.number,
                               style: _customTextStyle(24),
                               decoration: new InputDecoration(
+                                errorText: phoneNoValidate ? null : 'Required',
+                                errorStyle: _hiddenErrorTextStyle(),
                                 filled: true,
                                 fillColor: Colors.white,
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.greenAccent),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(45.0),
-                                  borderSide: BorderSide(color: Colors.white),
-                                ),
+                                focusedErrorBorder:
+                                    _customInputBorder(Colors.red),
+                                errorBorder: _customInputBorder(Colors.red),
+                                focusedBorder:
+                                    _customInputBorder(Colors.greenAccent),
+                                enabledBorder: _customInputBorder(Colors.white),
                               ),
                             ),
                           ],
@@ -342,8 +386,11 @@ class _RegisterState extends State<MyRegisterPage> {
                             minWidth: 300,
                             child: RaisedButton(
                               onPressed: () {
-                                setData();
-                                navigateToRegisterCameraPage(context);
+                                validate();
+                                if (allValidate) {
+                                  setData();
+                                  navigateToRegisterCameraPage(context);
+                                }
                               },
                               color: Colors.green,
                               elevation: 0.0,
