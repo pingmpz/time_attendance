@@ -5,4 +5,5 @@ class Data {
   static String phoneNo;
   static int gender = 0; // !- 0-Male 1-Female 2-Other
   static String imagePath;
+
 }

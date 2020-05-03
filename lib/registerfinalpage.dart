@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'data.dart';
+import 'dataForJson.dart';
 import 'registercamerapage.dart';
 import 'homepage.dart';
 
@@ -13,6 +16,28 @@ import 'homepage.dart';
 
 class MyRegisterFinalPage extends StatelessWidget {
   final Color mycol = Color(0xFF5CA9F0);
+  final String link = '';
+
+  Future<DataForJson> sendData() async {
+    final http.Response response = await http.post(
+      link, // !- Link ?
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'firstName': Data.firstName,
+        'lastName' : Data.lastName,
+        'occupation' : Data.occupation,
+        'phoneNo' : Data.phoneNo,
+        'imagePath' : Data.imagePath // !- Image ?
+      }),
+    );
+    if (response.statusCode == 201) {
+      return DataForJson.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed');
+    }
+  }
 
   Widget _customText(String txt, double size) {
     return Text(txt,
@@ -88,6 +113,7 @@ class MyRegisterFinalPage extends StatelessWidget {
                       height: 60,
                       child: RaisedButton(
                         onPressed: () {
+                          sendData();
                           navigateToRegisterCameraPage(context);
                         },
                         color: Colors.deepOrange,

@@ -9,7 +9,7 @@ import 'data.dart';
 /*
    !- NOTE
    Button - Size (300 x 60)
-   Toggle Button- Size ((MediaQuery.of(context).size.width - (marginSize * 2)) * 0.1 x 60)
+   Toggle Button (Each) - Size ((Screen Width - (marginSize * 2)) * 0.1 x 60)
  */
 
 class MyRegisterPage extends StatefulWidget {
@@ -34,7 +34,6 @@ class _RegisterState extends State<MyRegisterPage> {
   // !- Validation
   bool allValidate = true;
   bool firstNameValidate = true;
-
   bool lastNameValidate = true;
   bool occupationValidate = true;
   bool phoneNoValidate = true;

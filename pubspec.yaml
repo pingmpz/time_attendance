@@ -14,6 +14,7 @@ dependencies:
   path_provider:
   path:
   countdown_flutter:
+  http:
 
 dev_dependencies:
   flutter_test:
